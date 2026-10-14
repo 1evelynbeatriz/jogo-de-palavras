@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5ef">
+  <title>Palavra Viva | Protótipos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght,SOFT,WONK@9..144,500,20,1;9..144,600,20,1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172b3d;
+      --muted: #53636d;
+      --paper: #f4f5ef;
+      --surface: #ffffff;
+      --line: #b9c4c4;
+      --accent: #ef684e;
+      --accent-ink: #6b2419;
+      --good: #087d70;
+      --good-ink: #ffffff;
+      --present: #ffe36b;
+      --present-ink: #2e2912;
+      --absent: #dfe5e2;
+      --focus: #101f30;
+      --display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+      --body: "Atkinson Hyperlegible", Verdana, sans-serif;
+      --mono: "DM Mono", "Courier New", monospace;
+      --radius: 5px;
+      --shadow: 4px 4px 0 rgba(23, 43, 61, .12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 0;
+      margin: 0;
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.45;
+      transition: background-color .2s ease, color .2s ease;
+    }
+
+    button, input { font: inherit; }
+
+    button {
+      color: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible, input:focus-visible, a:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    button:disabled { cursor: not-allowed; opacity: .58; }
+
+    .page-wrap {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 0 34px 52px;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 78px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-family: var(--display);
+      font-size: 19px;
+      font-weight: 700;
+      transform: rotate(-4deg);
+    }
+
+    .brand-name {
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .brand-caption {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quiet-button, .icon-text-button {
+      min-height: 42px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .quiet-button:hover, .icon-text-button:hover { border-color: var(--ink); }
+
+    .intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 30px 0 22px;
+    }
+
+    .eyebrow, .micro-label {
+      margin: 0;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      margin: 5px 0 2px;
+      font-family: var(--display);
+      font-size: clamp(28px, 3vw, 39px);
+      line-height: 1.05;
+    }
+
+    .intro-note {
+      max-width: 390px;
+      margin: 0;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .prototype-nav {
+      display: flex;
+      gap: 8px;
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .prototype-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 45px;
+      padding: 9px 15px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      transition: background-color .15s ease, transform .15s ease;
+    }
+
+    .prototype-tab:hover { transform: translateY(-1px); }
+    .prototype-tab[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: white; }
+    .tab-number { font-family: var(--mono); font-size: 12px; }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 238px minmax(0, 1fr);
+      align-items: start;
+      gap: 24px;
+      padding-top: 24px;
+    }
+
+    .daily-rail {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .rail-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 13px;
+    }
+
+    .rail-heading h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 18px;
+    }
+
+    .rail-heading span { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+
+    .challenge-list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .challenge-button {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      min-height: 39px;
+      place-items: center;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .challenge-button:hover { border-color: var(--accent); }
+    .challenge-button[aria-current="page"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+    .challenge-button.is-done::after { position: absolute; top: 2px; right: 3px; color: var(--good); content: "•"; font-size: 14px; line-height: 1; }
+
+    .rail-divider { height: 1px; margin: 18px 0; background: var(--line); }
+
+    .mode-label { margin-bottom: 8px; }
+
+    .mode-switch {
+      display: grid;
+      gap: 5px;
+    }
+
+    .mode-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 39px;
+      padding: 7px 10px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+    }
+
+    .mode-button span:last-child { font-family: var(--mono); font-size: 10px; }
+    .mode-button[aria-pressed="true"] { border-color: var(--line); background: var(--paper); color: var(--ink); font-weight: 700; }
+
+    .rail-footnote {
+      margin: 15px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .game-area { min-width: 0; }
+
+    .game-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin: 2px 0 15px;
+    }
+
+    .today-date { margin: 0; color: var(--muted); font-family: var(--mono); font-size: 11px; text-transform: uppercase; }
+
+    .game-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin: 0 0 2px;
+    }
+
+    .game-title-row h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 25px;
+      line-height: 1.1;
+    }
+
+    .challenge-count { color: var(--muted); font-family: var(--mono); font-size: 12px; }
+
+    .board-picker {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .board-select {
+      min-width: 0;
+      padding: 9px 9px 8px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      text-align: left;
+      transition: border-color .15s ease, transform .15s ease;
+    }
+
+    .board-select:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .board-select[aria-pressed="true"] { border: 2px solid var(--ink); padding: 8px 8px 7px; }
+    .board-select.is-won { border-color: var(--good); }
+    .board-select.is-lost { border-color: var(--accent); }
+
+    .board-select-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      margin-bottom: 7px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .board-select-top span:last-child { color: var(--muted); font-family: var(--mono); font-size: 10px; font-weight: 400; }
+
+    .mini-cells { display: grid; grid-template-columns: repeat(var(--word-length), minmax(5px, 1fr)); gap: 3px; }
+    .mini-cell { aspect-ratio: 1; min-width: 0; border: 1px solid var(--line); border-radius: 1px; background: var(--paper); }
+    .mini-cell.is-correct { border-color: var(--good); background: var(--good); }
+    .mini-cell.is-present { border-color: #d1aa24; background: var(--present); }
+    .mini-cell.is-absent { border-color: #829094; background: #829094; }
+
+    .active-play {
+      display: grid;
+      grid-template-columns: minmax(245px, .85fr) minmax(280px, 1fr);
+      gap: 26px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .active-left { min-width: 0; }
+
+    .active-heading {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 17px;
+    }
+
+    .active-heading h3 {
+      margin: 2px 0 0;
+      font-family: var(--display);
+      font-size: 20px;
+    }
+
+    .remaining {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hint-button {
+      min-height: 41px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .hint-button:hover { border-color: var(--accent); }
+
+    .guess-board {
+      display: grid;
+      width: min(100%, 355px);
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+
+    .guess-row {
+      display: grid;
+      grid-template-columns: repeat(var(--word-length), minmax(32px, 1fr));
+      gap: 5px;
+    }
+
+    .guess-cell {
+      display: grid;
+      aspect-ratio: 1;
+      min-width: 0;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--surface);
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .guess-cell.has-letter { border-color: var(--muted); }
+    .guess-cell.is-correct { border-color: var(--good); background: var(--good); color: var(--good-ink); }
+    .guess-cell.is-present { border-color: #d1aa24; background: var(--present); color: var(--present-ink); }
+    .guess-cell.is-absent { border-color: #829094; background: #829094; color: #101f30; }
+
+    .input-panel { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+
+    .input-caption {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .guess-form { display: flex; gap: 7px; }
+
+    .guess-input {
+      width: 100%;
+      min-width: 0;
+      min-height: 47px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .submit-button {
+      min-width: 100px;
+      min-height: 47px;
+      padding: 9px 13px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: white;
+      font-weight: 700;
+    }
+
+    .submit-button:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+    .status-message {
+      min-height: 24px;
+      margin: 7px 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-message.is-error { color: #9b2519; font-weight: 700; }
+    .status-message.is-success { color: var(--good); font-weight: 700; }
+
+    .onscreen-keyboard { display: grid; gap: 5px; }
+    .key-row { display: flex; justify-content: center; gap: 4px; }
+
+    .key-button {
+      display: grid;
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 37px;
+      place-items: center;
+      padding: 4px 2px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .key-button:hover { border-color: var(--ink); }
+    .key-button.is-correct { border-color: var(--good); background: var(--good); color: white; }
+    .key-button.is-present { border-color: #d1aa24; background: var(--present); color: var(--present-ink); }
+    .key-button.is-absent { border-color: #829094; background: #829094; color: #101f30; }
+    .key-button.key-wide { flex: 1.5 1 0; font-size: 10px; }
+
+    .game-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 15px 2px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .game-footer p { margin: 0; }
+
+    .result-strip {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding: 14px 17px;
+      border: 1px solid var(--good);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .result-strip.is-visible { display: flex; }
+    .result-strip p { margin: 0; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    dialog {
+      width: min(510px, calc(100% - 28px));
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 18px 70px rgba(0, 0, 0, .24);
+    }
+
+    dialog::backdrop { background: rgba(10, 21, 29, .55); }
+    .dialog-body { padding: 24px; }
+    .dialog-body h2 { margin-bottom: 7px; font-family: var(--display); font-size: 25px; }
+    .dialog-body p { color: var(--muted); }
+    .dialog-close { min-height: 42px; padding: 8px 14px; border: 1px solid var(--ink); border-radius: var(--radius); background: var(--ink); color: white; font-weight: 700; }
+
+    .prototype-note {
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    /* Direction 02: late-night arcade counter */
+    body[data-theme="arcade"] {
+      color-scheme: dark;
+      --ink: #f7f8ed;
+      --muted: #c1c8bb;
+      --paper: #171a19;
+      --surface: #222725;
+      --line: #59635d;
+      --accent: #d7fb55;
+      --accent-ink: #16200a;
+      --good: #087c69;
+      --good-ink: #ffffff;
+      --present: #ffbd57;
+      --present-ink: #221808;
+      --absent: #46504a;
+      --focus: #e6ff65;
+      --display: "Space Grotesk", "Trebuchet MS", sans-serif;
+      --body: "Space Grotesk", Verdana, sans-serif;
+      --mono: "DM Mono", "Courier New", monospace;
+      --radius: 2px;
+      --shadow: 0 0 0 1px rgba(215, 251, 85, .14), 0 8px 26px rgba(0, 0, 0, .24);
+      background-image: radial-gradient(rgba(215, 251, 85, .09) .7px, transparent .7px);
+      background-size: 20px 20px;
+    }
+
+    body[data-theme="arcade"] .site-header { border-bottom-width: 2px; }
+    body[data-theme="arcade"] .brand-mark { border: 1px solid var(--accent); background: transparent; color: var(--accent); transform: none; }
+    body[data-theme="arcade"] .prototype-tab[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+    body[data-theme="arcade"] .challenge-button[aria-current="page"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+    body[data-theme="arcade"] .active-play { border-width: 2px; }
+    body[data-theme="arcade"] .board-select[aria-pressed="true"] { border-color: var(--accent); }
+    body[data-theme="arcade"] .submit-button { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+    body[data-theme="arcade"] .submit-button:hover { filter: brightness(1.1); }
+    body[data-theme="arcade"] .key-button { background: #303632; }
+    body[data-theme="arcade"] .key-button.is-correct { background: var(--good); }
+    body[data-theme="arcade"] .guess-cell { font-family: var(--mono); }
+    body[data-theme="arcade"] .brand-name, body[data-theme="arcade"] .game-title-row h2 { text-transform: uppercase; }
+
+    /* Direction 03: tactile, color-blocked word studio */
+    body[data-theme="tactile"] {
+      --ink: #20354a;
+      --muted: #435a67;
+      --paper: #eaf3f2;
+      --surface: #fffdfa;
+      --line: #91a9a9;
+      --accent: #ee7255;
+      --accent-ink: #4c1c11;
+      --good: #087d70;
+      --good-ink: #ffffff;
+      --present: #f5d752;
+      --present-ink: #302808;
+      --absent: #d3ddda;
+      --focus: #f0523d;
+      --display: "Fraunces", Georgia, serif;
+      --body: "Atkinson Hyperlegible", Verdana, sans-serif;
+      --radius: 13px;
+      --shadow: 0 8px 0 rgba(32, 53, 74, .08);
+      background-image: radial-gradient(rgba(32, 53, 74, .07) .8px, transparent .8px);
+      background-size: 22px 22px;
+    }
+
+    body[data-theme="tactile"] .brand-mark { border: 2px solid var(--ink); border-radius: 9px 9px 13px 9px; }
+    body[data-theme="tactile"] .daily-rail { border-width: 2px; }
+    body[data-theme="tactile"] .challenge-button { border-radius: 9px; }
+    body[data-theme="tactile"] .challenge-button[aria-current="page"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+    body[data-theme="tactile"] .mode-button[aria-pressed="true"] { border-color: var(--ink); background: #f5d752; }
+    body[data-theme="tactile"] .board-select { border-radius: 12px; }
+    body[data-theme="tactile"] .board-select[aria-pressed="true"] { border-color: var(--accent); }
+    body[data-theme="tactile"] .guess-cell { border-width: 2px; border-radius: 8px; }
+    body[data-theme="tactile"] .key-button { min-height: 42px; border-radius: 9px; background: #f2f7f4; }
+    body[data-theme="tactile"] .submit-button { border-color: var(--ink); border-radius: 10px; background: var(--ink); }
+
+    @media (min-width: 1050px) {
+      body[data-theme="arcade"] .app-grid { grid-template-columns: minmax(0, 1fr); }
+      body[data-theme="arcade"] .daily-rail {
+        display: grid;
+        grid-template-columns: auto minmax(300px, 1fr) auto minmax(310px, .9fr);
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+      }
+      body[data-theme="arcade"] .rail-heading { margin: 0; }
+      body[data-theme="arcade"] .challenge-list { grid-template-columns: repeat(10, minmax(36px, 1fr)); }
+      body[data-theme="arcade"] .challenge-button { min-height: 36px; }
+      body[data-theme="arcade"] .rail-divider { width: 1px; height: 34px; margin: 0; }
+      body[data-theme="arcade"] .mode-label { display: none; }
+      body[data-theme="arcade"] .mode-switch { grid-template-columns: repeat(3, 1fr); }
+      body[data-theme="arcade"] .mode-button { min-height: 36px; padding: 5px 8px; }
+      body[data-theme="arcade"] .rail-footnote { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      .page-wrap { padding-right: 20px; padding-left: 20px; }
+      .app-grid { grid-template-columns: 205px minmax(0, 1fr); gap: 16px; }
+      .daily-rail { padding: 14px; }
+      .board-picker { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .active-play { grid-template-columns: minmax(210px, .8fr) minmax(240px, 1fr); gap: 18px; padding: 17px; }
+      body[data-theme="arcade"] .app-grid { grid-template-columns: 1fr; }
+      body[data-theme="arcade"] .daily-rail { display: block; }
+      body[data-theme="arcade"] .rail-footnote { display: block; }
+    }
+
+    @media (max-width: 680px) {
+      .page-wrap { padding: 0 14px 34px; }
+      .site-header { min-height: 66px; }
+      .brand-name { font-size: 18px; }
+      .header-actions { gap: 5px; }
+      .quiet-button, .icon-text-button { min-height: 40px; padding: 7px 9px; font-size: 13px; }
+      .intro { align-items: start; flex-direction: column; gap: 6px; padding: 24px 0 17px; }
+      h1 { font-size: 31px; }
+      .intro-note { max-width: 520px; text-align: left; }
+      .prototype-nav { gap: 5px; overflow-x: auto; padding-bottom: 15px; }
+      .prototype-tab { flex: 1 0 auto; min-height: 42px; padding: 7px 10px; font-size: 13px; }
+      .app-grid { grid-template-columns: 1fr; gap: 14px; padding-top: 15px; }
+      .daily-rail { padding: 13px; }
+      .rail-heading { margin-bottom: 9px; }
+      .challenge-list { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+      .challenge-button { min-height: 38px; padding: 3px; font-size: 11px; }
+      .rail-divider { margin: 12px 0; }
+      .mode-switch { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+      .mode-button { min-height: 43px; flex-direction: column; justify-content: center; gap: 0; padding: 4px 3px; text-align: center; font-size: 12px; }
+      .mode-button span:last-child { font-size: 9px; }
+      .rail-footnote { display: none; }
+      .game-topline { align-items: start; }
+      .game-title-row { flex-wrap: wrap; }
+      .game-title-row h2 { font-size: 22px; }
+      .board-picker { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 10px; }
+      .board-select { padding: 7px; }
+      .board-select[aria-pressed="true"] { padding: 6px; }
+      .board-select-top { margin-bottom: 5px; }
+      .active-play { grid-template-columns: 1fr; gap: 18px; padding: 15px; }
+      .active-heading { margin-bottom: 12px; }
+      .guess-board { width: min(100%, 370px); margin: 0 auto; gap: 4px; }
+      .guess-cell { font-size: 18px; }
+      .input-panel { border-top: 1px solid var(--line); padding-top: 15px; }
+      .key-button { min-height: 39px; }
+      .game-footer { align-items: start; flex-direction: column; gap: 7px; }
+      .prototype-note { text-align: left; }
+      body[data-theme="arcade"] .daily-rail { display: block; }
+      body[data-theme="arcade"] .challenge-list { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+      body[data-theme="arcade"] .rail-divider { width: auto; height: 1px; margin: 12px 0; }
+      body[data-theme="arcade"] .mode-switch { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      body[data-theme="arcade"] .mode-label { display: block; }
+      body[data-theme="arcade"] .rail-footnote { display: none; }
+    }
+
+    @media (max-width: 380px) {
+      .page-wrap { padding-right: 10px; padding-left: 10px; }
+      .brand-caption { font-size: 9px; }
+      .prototype-tab { padding: 6px 8px; }
+      .board-picker { gap: 4px; }
+      .board-select { padding: 6px 5px; }
+      .board-select[aria-pressed="true"] { padding: 5px 4px; }
+      .board-select-top { font-size: 11px; }
+      .board-select-top span:last-child { font-size: 9px; }
+      .active-play { padding: 12px; }
+      .guess-cell { font-size: 16px; }
+      .submit-button { min-width: 82px; padding: 8px; }
+      .key-button { min-height: 37px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body data-theme="editorial">
+  <div class="page-wrap">
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Palavra Viva, início">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <span><span class="brand-name">palavra viva</span><span class="brand-caption">jogo diário de palavras</span></span>
+      </a>
+      <div class="header-actions">
+        <button class="quiet-button" type="button" data-dialog="helpDialog">Como jogar</button>
+        <button class="icon-text-button" type="button" data-dialog="progressDialog">Meu progresso</button>
+      </div>
+    </header>
+
+    <section class="intro" id="inicio" aria-labelledby="pageTitle">
+      <div>
+        <p class="eyebrow">Três direções de interface · mesmo jogo</p>
+        <h1 id="pageTitle">Escolha uma linguagem.</h1>
+      </div>
+      <p class="intro-note">Até 10 desafios por dia. Seis palavras em paralelo, cada uma com seus próprios palpites.</p>
+    </section>
+
+    <nav class="prototype-nav" aria-label="Escolher protótipo visual">
+      <button class="prototype-tab" type="button" data-theme-choice="editorial" aria-pressed="true"><span class="tab-number">01</span> Editorial</button>
+      <button class="prototype-tab" type="button" data-theme-choice="arcade" aria-pressed="false"><span class="tab-number">02</span> Arcade</button>
+      <button class="prototype-tab" type="button" data-theme-choice="tactile" aria-pressed="false"><span class="tab-number">03</span> Tátil</button>
+    </nav>
+
+    <main class="app-grid">
+      <aside class="daily-rail" aria-label="Desafios e dificuldade">
+        <div class="rail-heading">
+          <h2>Desafios do dia</h2>
+          <span>01 / 10</span>
+        </div>
+        <div class="challenge-list" role="group" aria-label="Escolher desafio diário" id="challengeList"></div>
+        <div class="rail-divider"></div>
+        <p class="micro-label mode-label">Escolha a dificuldade</p>
+        <div class="mode-switch" role="group" aria-label="Modo de dificuldade" id="modeSwitch"></div>
+        <p class="rail-footnote">Seu progresso fica salvo neste navegador. Sem conta, anúncios ou pressa.</p>
+      </aside>
+
+      <section class="game-area" aria-labelledby="challengeTitle">
+        <div class="game-topline">
+          <div>
+            <p class="today-date" id="todayDate"></p>
+            <div class="game-title-row">
+              <h2 id="challengeTitle">Desafio 01</h2>
+              <span class="challenge-count">· 6 palavras</span>
+            </div>
+          </div>
+          <p class="micro-label" id="modeSummary">Modo normal · 5 letras</p>
+        </div>
+
+        <div class="board-picker" role="group" aria-label="Escolher palavra para jogar" id="boardPicker"></div>
+
+        <section class="active-play" aria-labelledby="activeBoardTitle">
+          <div class="active-left">
+            <div class="active-heading">
+              <div>
+                <p class="micro-label" id="activeBoardLabel">Palavra 01</p>
+                <h3 id="activeBoardTitle">Sua próxima palavra</h3>
+                <p class="remaining" id="remainingCount"></p>
+              </div>
+              <button class="hint-button" id="hintButton" type="button">Dica <span id="hintCount"></span></button>
+            </div>
+            <div class="guess-board" id="guessBoard" role="grid" aria-label="Tabuleiro de palpites"></div>
+          </div>
+
+          <div class="input-panel">
+            <p class="input-caption" id="inputCaption">Digite uma palavra de 5 letras.</p>
+            <form class="guess-form" id="guessForm">
+              <label class="sr-only" for="guessInput">Seu palpite</label>
+              <input class="guess-input" id="guessInput" name="guess" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="statusMessage inputCaption">
+              <button class="submit-button" type="submit">Enviar</button>
+            </form>
+            <p class="status-message" id="statusMessage" role="status" aria-live="polite"></p>
+            <div class="onscreen-keyboard" id="onscreenKeyboard" role="group" aria-label="Teclado virtual"></div>
+          </div>
+        </section>
+
+        <div class="result-strip" id="resultStrip" role="status" aria-live="polite">
+          <p id="resultText"></p>
+          <button class="quiet-button" id="nextChallenge" type="button">Próximo desafio</button>
+        </div>
+
+        <footer class="game-footer">
+          <p>Feedback por letra e posição, sem depender apenas de cor.</p>
+          <p id="saveState">Progresso salvo neste navegador</p>
+        </footer>
+      </section>
+    </main>
+
+    <p class="prototype-note" id="themeCaption">Protótipo 01 · editorial de revista, contraste nítido e acentos coral e cobalto.</p>
+  </div>
+
+  <dialog id="helpDialog" aria-labelledby="helpTitle">
+    <div class="dialog-body">
+      <p class="micro-label">Regras rápidas</p>
+      <h2 id="helpTitle">Uma palavra por vez, seis à vista.</h2>
+      <p>Escolha um dos seis tabuleiros e descubra a palavra. Cada tabuleiro tem palpites e dicas próprios. Verde marca a letra no lugar certo; amarelo, uma letra que aparece em outra posição; cinza, uma letra que não aparece.</p>
+      <p>Você pode digitar no teclado físico ou usar o teclado da tela. Um palpite inválido não gasta tentativa.</p>
+      <button class="dialog-close" type="button" data-close-dialog>Voltar ao jogo</button>
+    </div>
+  </dialog>
+
+  <dialog id="progressDialog" aria-labelledby="progressTitle">
+    <div class="dialog-body">
+      <p class="micro-label">Seu espaço de jogo</p>
+      <h2 id="progressTitle">Seu progresso</h2>
+      <p id="progressSummary">Desafios concluídos: 0 · palavras resolvidas: 0.</p>
+      <p>Sequência diária, histórico e conquistas ficam neste navegador neste protótipo. Nenhuma conta é necessária.</p>
+      <button class="dialog-close" type="button" data-close-dialog>Voltar ao jogo</button>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      const modeConfig = {
+        easy: { label: "Leve", summary: "fácil", length: 4, attempts: 8, hints: 3 },
+        normal: { label: "Clássico", summary: "normal", length: 5, attempts: 7, hints: 2 },
+        hard: { label: "Desafio", summary: "difícil", length: 6, attempts: 6, hints: 1 }
+      };
+      const answers = {
+        easy: ["CASA", "PATO", "FADA", "BOLA", "GATO", "LAGO"],
+        normal: ["LIVRO", "NUVEM", "PRAIA", "MUNDO", "TIGRE", "FOLHA"],
+        hard: ["CAMISA", "JARDIM", "FLORES", "AMIGOS", "VIAGEM", "CIDADE"]
+      };
+      const themeCaptions = {
+        editorial: "Protótipo 01 · editorial de revista, contraste nítido e acentos coral e cobalto.",
+        arcade: "Protótipo 02 · balcão de fliperama, fundo escuro e sinais em lima e âmbar.",
+        tactile: "Protótipo 03 · peças táteis, blocos de cor e uma linguagem pop acolhedora."
+      };
+      const keyboardRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
+      const storageKey = "palavra-viva-prototype-state-v1";
+      const state = {
+        theme: "editorial",
+        mode: "normal",
+        challenge: 1,
+        activeBoard: 0,
+        puzzles: {},
+        doneChallenges: new Set(),
+        solvedWords: 0
+      };
+
+      const byId = (id) => document.getElementById(id);
+      const getPuzzleKey = (mode, challenge, index) => `${mode}:${challenge}:${index}`;
+      const getPuzzle = (index = state.activeBoard) => {
+        const key = getPuzzleKey(state.mode, state.challenge, index);
+        if (!state.puzzles[key]) {
+          state.puzzles[key] = {
+            target: answers[state.mode][(index + state.challenge - 1) % answers[state.mode].length],
+            guesses: [],
+            hintsLeft: modeConfig[state.mode].hints,
+            revealed: [],
+            status: "playing"
+          };
+        }
+        return state.puzzles[key];
+      };
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+          if (!saved) return;
+          state.puzzles = saved.puzzles || {};
+          state.doneChallenges = new Set(saved.doneChallenges || []);
+          state.solvedWords = Number(saved.solvedWords) || 0;
+        } catch (error) {
+          localStorage.removeItem(storageKey);
+        }
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({
+            puzzles: state.puzzles,
+            doneChallenges: [...state.doneChallenges],
+            solvedWords: state.solvedWords
+          }));
+          byId("saveState").textContent = "Progresso salvo neste navegador";
+        } catch (error) {
+          byId("saveState").textContent = "Sessão temporária neste navegador";
+        }
+      }
+
+      function renderChallengeList() {
+        const list = byId("challengeList");
+        list.replaceChildren();
+        for (let number = 1; number <= 10; number += 1) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `challenge-button${state.doneChallenges.has(number) ? " is-done" : ""}`;
+          button.textContent = String(number).padStart(2, "0");
+          button.setAttribute("aria-label", `Desafio ${number}${state.doneChallenges.has(number) ? ", concluído" : ", disponível"}`);
+          if (number === state.challenge) button.setAttribute("aria-current", "page");
+          button.addEventListener("click", () => {
+            state.challenge = number;
+            state.activeBoard = 0;
+            byId("statusMessage").textContent = "";
+            render();
+          });
+          list.append(button);
+        }
+      }
+
+      function renderModes() {
+        const switcher = byId("modeSwitch");
+        switcher.replaceChildren();
+        Object.entries(modeConfig).forEach(([key, config]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "mode-button";
+          button.setAttribute("aria-pressed", String(state.mode === key));
+          button.innerHTML = `<span>${config.label}</span><span>${config.length} letras</span>`;
+          button.addEventListener("click", () => {
+            state.mode = key;
+            state.activeBoard = 0;
+            byId("statusMessage").textContent = "";
+            render();
+          });
+          switcher.append(button);
+        });
+      }
+
+      function markGuess(guess, target) {
+        const result = Array(guess.length).fill("absent");
+        const remaining = target.split("");
+        for (let index = 0; index < guess.length; index += 1) {
+          if (guess[index] === target[index]) {
+            result[index] = "correct";
+            remaining[index] = null;
+          }
+        }
+        for (let index = 0; index < guess.length; index += 1) {
+          if (result[index] === "correct") continue;
+          const matchIndex = remaining.indexOf(guess[index]);
+          if (matchIndex !== -1) {
+            result[index] = "present";
+            remaining[matchIndex] = null;
+          }
+        }
+        return result;
+      }
+
+      function stateLabel(result) {
+        return { correct: "na posição certa", present: "na palavra, em outra posição", absent: "não aparece na palavra" }[result];
+      }
+
+      function renderBoardPicker() {
+        const picker = byId("boardPicker");
+        picker.replaceChildren();
+        const config = modeConfig[state.mode];
+        for (let index = 0; index < 6; index += 1) {
+          const puzzle = getPuzzle(index);
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `board-select${puzzle.status === "won" ? " is-won" : ""}${puzzle.status === "lost" ? " is-lost" : ""}`;
+          button.setAttribute("aria-pressed", String(state.activeBoard === index));
+          const status = puzzle.status === "won" ? "resolvida" : puzzle.status === "lost" ? "encerrada" : `${Math.max(0, config.attempts - puzzle.guesses.length)} tentativas restantes`;
+          button.setAttribute("aria-label", `Palavra ${index + 1}, ${status}`);
+
+          const top = document.createElement("span");
+          top.className = "board-select-top";
+          top.innerHTML = `<span>Palavra ${String(index + 1).padStart(2, "0")}</span><span>${puzzle.status === "won" ? "✓" : puzzle.status === "lost" ? "×" : `${Math.max(0, config.attempts - puzzle.guesses.length)} rest.`}</span>`;
+          const cells = document.createElement("span");
+          cells.className = "mini-cells";
+          cells.setAttribute("aria-hidden", "true");
+          cells.style.setProperty("--word-length", config.length);
+          const latest = puzzle.guesses.at(-1);
+          const latestStates = latest ? markGuess(latest, puzzle.target) : [];
+          for (let cellIndex = 0; cellIndex < config.length; cellIndex += 1) {
+            const cell = document.createElement("span");
+            cell.className = `mini-cell${latestStates[cellIndex] ? ` is-${latestStates[cellIndex]}` : ""}`;
+            cells.append(cell);
+          }
+          button.append(top, cells);
+          button.addEventListener("click", () => {
+            state.activeBoard = index;
+            byId("statusMessage").textContent = "";
+            render();
+            byId("activeBoardTitle").focus({ preventScroll: true });
+          });
+          picker.append(button);
+        }
+      }
+
+      function renderGuessBoard() {
+        const puzzle = getPuzzle();
+        const config = modeConfig[state.mode];
+        const board = byId("guessBoard");
+        board.replaceChildren();
+        board.setAttribute("aria-label", `Palavra ${state.activeBoard + 1}: ${puzzle.guesses.length} de ${config.attempts} tentativas usadas`);
+        board.setAttribute("aria-rowcount", config.attempts);
+        board.setAttribute("aria-colcount", config.length);
+        for (let row = 0; row < config.attempts; row += 1) {
+          const rowElement = document.createElement("div");
+          rowElement.className = "guess-row";
+          rowElement.setAttribute("role", "row");
+          rowElement.style.setProperty("--word-length", config.length);
+          const guess = puzzle.guesses[row] || "";
+          const results = guess ? markGuess(guess, puzzle.target) : [];
+          for (let column = 0; column < config.length; column += 1) {
+            const cell = document.createElement("span");
+            cell.className = `guess-cell${guess[column] ? " has-letter" : ""}${results[column] ? ` is-${results[column]}` : ""}`;
+            cell.setAttribute("role", "gridcell");
+            const letter = guess[column] || "";
+            cell.textContent = letter;
+            if (letter) cell.setAttribute("aria-label", `${letter}, ${stateLabel(results[column])}`);
+            else cell.setAttribute("aria-label", `Linha ${row + 1}, posição ${column + 1}, vazia`);
+            rowElement.append(cell);
+          }
+          board.append(rowElement);
+        }
+      }
+
+      function keyboardState(letter) {
+        const puzzle = getPuzzle();
+        let best = "";
+        for (const guess of puzzle.guesses) {
+          const states = markGuess(guess, puzzle.target);
+          guess.split("").forEach((value, index) => {
+            if (value !== letter) return;
+            if (states[index] === "correct") best = "correct";
+            else if (states[index] === "present" && best !== "correct") best = "present";
+            else if (!best) best = "absent";
+          });
+        }
+        return best;
+      }
+
+      function renderKeyboard() {
+        const keyboard = byId("onscreenKeyboard");
+        keyboard.replaceChildren();
+        keyboardRows.forEach((row, rowIndex) => {
+          const rowElement = document.createElement("div");
+          rowElement.className = "key-row";
+          if (rowIndex === 2) {
+            const deleteButton = createKey("Apagar", "key-wide", () => editInput("backspace", true));
+            rowElement.append(deleteButton);
+          }
+          for (const letter of row) {
+            const status = keyboardState(letter);
+            rowElement.append(createKey(letter, status ? `is-${status}` : "", () => editInput(letter, true)));
+          }
+          if (rowIndex === 2) {
+            rowElement.append(createKey("Enviar", "key-wide", () => submitGuess()));
+          }
+          keyboard.append(rowElement);
+        });
+
+        const puzzle = getPuzzle();
+        const keyRows = Array.from(keyboard.children, (row) => Array.from(row.querySelectorAll("button")));
+        keyRows.forEach((row, rowIndex) => row.forEach((button, columnIndex) => {
+          button.disabled = puzzle.status !== "playing";
+          button.tabIndex = rowIndex === 0 && columnIndex === 0 && puzzle.status === "playing" ? 0 : -1;
+          button.addEventListener("keydown", (event) => {
+            const moves = { ArrowLeft: [0, -1], ArrowRight: [0, 1], ArrowUp: [-1, 0], ArrowDown: [1, 0] };
+            const move = moves[event.key];
+            if (!move) return;
+            event.preventDefault();
+            const nextRowIndex = Math.max(0, Math.min(keyRows.length - 1, rowIndex + move[0]));
+            const nextColumnIndex = Math.max(0, Math.min(keyRows[nextRowIndex].length - 1, columnIndex + move[1]));
+            keyRows[nextRowIndex][nextColumnIndex].focus();
+          });
+        }));
+      }
+
+      function createKey(label, className, action) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `key-button ${className}`.trim();
+        button.textContent = label;
+        button.setAttribute("aria-label", label === "Apagar" ? "Apagar última letra" : label === "Enviar" ? "Enviar palpite" : `Inserir ${label}`);
+        button.addEventListener("click", action);
+        return button;
+      }
+
+      function editInput(value, keepFocus = false) {
+        const input = byId("guessInput");
+        if (getPuzzle().status !== "playing") return;
+        if (value === "backspace") input.value = input.value.slice(0, -1);
+        else if (input.value.length < modeConfig[state.mode].length) input.value += value;
+        if (!keepFocus) input.focus({ preventScroll: true });
+      }
+
+      function renderActiveDetails() {
+        const puzzle = getPuzzle();
+        const config = modeConfig[state.mode];
+        const boardNumber = String(state.activeBoard + 1).padStart(2, "0");
+        const remaining = Math.max(0, config.attempts - puzzle.guesses.length);
+        byId("activeBoardLabel").textContent = `Palavra ${boardNumber}`;
+        byId("activeBoardTitle").textContent = puzzle.status === "won" ? "Palavra resolvida" : puzzle.status === "lost" ? `A palavra era ${puzzle.target}` : "Sua próxima palavra";
+        byId("activeBoardTitle").setAttribute("tabindex", "-1");
+        byId("remainingCount").textContent = puzzle.status === "playing" ? `${remaining} ${remaining === 1 ? "tentativa restante" : "tentativas restantes"}` : puzzle.status === "won" ? `${puzzle.guesses.length} ${puzzle.guesses.length === 1 ? "palpite usado" : "palpites usados"}` : "Tentativas encerradas";
+        byId("hintCount").textContent = `(${puzzle.hintsLeft})`;
+        byId("hintButton").disabled = puzzle.status !== "playing" || puzzle.hintsLeft < 1;
+        byId("guessInput").maxLength = String(config.length);
+        byId("guessInput").placeholder = "_".repeat(config.length);
+        byId("guessInput").disabled = puzzle.status !== "playing";
+        byId("inputCaption").textContent = `Digite uma palavra de ${config.length} letras.`;
+        byId("modeSummary").textContent = `Modo ${config.summary} · ${config.length} letras`;
+        byId("challengeTitle").textContent = `Desafio ${String(state.challenge).padStart(2, "0")}`;
+        byId("todayDate").textContent = new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
+        byId("statusMessage").className = "status-message";
+        byId("resultStrip").classList.toggle("is-visible", isChallengeFinished());
+        if (isChallengeFinished()) {
+          byId("resultText").textContent = `Desafio concluído · ${state.doneChallenges.has(state.challenge) ? "resultado registrado" : "todas as palavras encerradas"}.`;
+        }
+      }
+
+      function render() {
+        document.body.dataset.theme = state.theme;
+        const challengeFinished = isChallengeFinished();
+        if (challengeFinished) state.doneChallenges.add(state.challenge);
+        document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.themeChoice === state.theme));
+        });
+        byId("themeCaption").textContent = themeCaptions[state.theme];
+        byId("challengeList").previousElementSibling.querySelector("span").textContent = `${String(state.challenge).padStart(2, "0")} / 10`;
+        renderChallengeList();
+        renderModes();
+        renderBoardPicker();
+        renderActiveDetails();
+        renderGuessBoard();
+        renderKeyboard();
+        if (challengeFinished) saveState();
+      }
+
+      function isChallengeFinished() {
+        return Array.from({ length: 6 }, (_, index) => getPuzzle(index).status !== "playing").every(Boolean);
+      }
+
+      function updatePuzzleStatuses() {
+        const config = modeConfig[state.mode];
+        for (let index = 0; index < 6; index += 1) {
+          const puzzle = getPuzzle(index);
+          if (puzzle.status !== "playing") continue;
+          if (puzzle.guesses.at(-1) === puzzle.target) {
+            puzzle.status = "won";
+            state.solvedWords += 1;
+          } else if (puzzle.guesses.length >= config.attempts) {
+            puzzle.status = "lost";
+          }
+        }
+      }
+
+      function submitGuess() {
+        const puzzle = getPuzzle();
+        const config = modeConfig[state.mode];
+        const input = byId("guessInput");
+        const guess = input.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleUpperCase("pt-BR").trim();
+        const status = byId("statusMessage");
+        if (puzzle.status !== "playing") {
+          status.textContent = "Esta palavra já foi encerrada. Escolha outro tabuleiro.";
+          status.className = "status-message is-error";
+          return;
+        }
+        if (!new RegExp(`^[A-Z]{${config.length}}$`).test(guess)) {
+          status.textContent = `Digite exatamente ${config.length} letras, sem espaços ou números.`;
+          status.className = "status-message is-error";
+          input.focus();
+          return;
+        }
+        puzzle.guesses.push(guess);
+        input.value = "";
+        updatePuzzleStatuses();
+        const updated = getPuzzle();
+        if (updated.status === "won") {
+          status.textContent = "Boa! Palavra resolvida.";
+          status.className = "status-message is-success";
+        } else if (updated.status === "lost") {
+          status.textContent = `Fim das tentativas. A palavra era ${updated.target}.`;
+          status.className = "status-message is-error";
+        } else {
+          status.textContent = `Palpite registrado. ${config.attempts - updated.guesses.length} tentativas restantes.`;
+          status.className = "status-message";
+        }
+        render();
+        byId("statusMessage").textContent = status.textContent;
+        byId("statusMessage").className = status.className;
+        if (updated.status === "playing") input.focus({ preventScroll: true });
+        else byId("activeBoardTitle").focus({ preventScroll: true });
+        saveState();
+      }
+
+      function useHint() {
+        const puzzle = getPuzzle();
+        if (puzzle.status !== "playing" || puzzle.hintsLeft < 1) return;
+        puzzle.hintsLeft -= 1;
+        const unrevealed = puzzle.target.split("").map((letter, index) => ({ letter, index })).filter(({ index }) => !puzzle.revealed.includes(index));
+        const choice = unrevealed[0];
+        if (choice) puzzle.revealed.push(choice.index);
+        const status = byId("statusMessage");
+        status.textContent = choice ? `Dica: a posição ${choice.index + 1} contém a letra ${choice.letter}.` : "Dica usada. Releia o feedback dos seus palpites.";
+        status.className = "status-message";
+        render();
+        byId("statusMessage").textContent = status.textContent;
+        saveState();
+      }
+
+      document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.theme = button.dataset.themeChoice;
+          render();
+        });
+      });
+      document.querySelectorAll("[data-dialog]").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (button.dataset.dialog === "progressDialog") {
+            byId("progressSummary").textContent = `Desafios concluídos: ${state.doneChallenges.size} · palavras resolvidas: ${state.solvedWords}.`;
+          }
+          byId(button.dataset.dialog).showModal();
+        });
+      });
+      document.querySelectorAll("[data-close-dialog]").forEach((button) => {
+        button.addEventListener("click", () => button.closest("dialog").close());
+      });
+      byId("guessForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        submitGuess();
+      });
+      byId("hintButton").addEventListener("click", useHint);
+      byId("nextChallenge").addEventListener("click", () => {
+        state.challenge = state.challenge % 10 + 1;
+        state.activeBoard = 0;
+        render();
+        byId("challengeTitle").focus({ preventScroll: true });
+      });
+      loadState();
+      render();
+    })();
+  </script>
+</body>
+</html>
