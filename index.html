@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Jogo diario de adivinhacao de palavras em portugues do Brasil" />
+    <title>Palavra Viva</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar" aria-label="Cabecalho do jogo">
+        <div class="brand" aria-label="Palavra Viva">
+          <span class="brand-mark" aria-hidden="true">P</span>
+          <div>
+            <span class="brand-name">Palavra Viva</span>
+            <span class="brand-caption">jogo de palavras</span>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="ghost-button" type="button" aria-label="Alternar tema visual">
+            Tema claro
+          </button>
+          <button id="reset-progress" class="ghost-button" type="button" aria-label="Limpar progresso do navegador">
+            Reiniciar
+          </button>
+        </div>
+      </header>
+
+      <main class="game-layout">
+        <aside class="sidebar" aria-label="Lista de desafios diários">
+          <div class="toolbar-card">
+            <div class="toolbar-head">
+              <h2>Desafios</h2>
+              <span id="date-label">Hoje</span>
+            </div>
+
+            <div id="challenge-list" class="challenge-list" aria-live="polite"></div>
+
+            <div class="toolbar-divider"></div>
+
+            <div class="mode-block">
+              <p class="section-label">Modo</p>
+              <div id="mode-list" class="mode-list" role="tablist" aria-label="Modos de dificuldade"></div>
+            </div>
+
+            <p class="sidebar-note">
+              Seis tabuleiros simultâneos. Cada palavra tem tentativas, dicas e feedback independentes.
+            </p>
+          </div>
+        </aside>
+
+        <section class="main-pane" aria-live="polite">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Desafio diário</p>
+              <h1 id="challenge-title">Desafio 1</h1>
+            </div>
+            <div class="challenge-metrics">
+              <span id="challenge-status">Em andamento</span>
+            </div>
+          </div>
+
+          <div id="board-picker" class="board-picker" aria-label="Seleção de tabuleiros"></div>
+
+          <div id="active-panel" class="active-panel">
+            <div class="active-header">
+              <div>
+                <p class="eyebrow">Tabuleiro</p>
+                <h2 id="board-title">Palavra 1</h2>
+              </div>
+              <button id="hint-button" class="secondary-button" type="button" aria-label="Usar dica">
+                Dica
+              </button>
+            </div>
+
+            <div class="board-layout">
+              <div class="guess-panel">
+                <div id="guess-grid" class="guess-grid" aria-label="Tabuleiro de palpites"></div>
+              </div>
+
+              <div class="input-panel">
+                <label class="input-label" for="guess-input">Seu palpite</label>
+                <form id="guess-form" class="guess-form">
+                  <input
+                    id="guess-input"
+                    class="guess-input"
+                    type="text"
+                    inputmode="text"
+                    maxlength="6"
+                    autocomplete="off"
+                    spellcheck="false"
+                    aria-label="Digite uma palavra"
+                  />
+                  <button type="submit" class="primary-button">Enviar</button>
+                </form>
+
+                <p id="status-message" class="status-message" aria-live="assertive"></p>
+
+                <div id="keyboard" class="keyboard" aria-label="Teclado virtual"></div>
+              </div>
+            </div>
+
+            <div id="result-strip" class="result-strip" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
